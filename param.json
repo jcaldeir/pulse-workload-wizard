@@ -1,0 +1,7 @@
+{
+	"pollInterval" : 15000,
+	"source" : "Wizard Source",
+	"metricsHost" : "https://github.com/jcaldeir/pulse-workload-metrics",
+	"pulseAPI" : "https://api.truesight-staging.bmc.com",
+	"authorizationToken" : "Basic am9hb19jYWxkZWlyYUBibWMuY29tOjM5NjIxODQ5LWY3MWQtNGVjYi05ZDVlLTFlYmZjMjY1NjhmZg=="
+}

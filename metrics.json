@@ -1,0 +1,28 @@
+{
+  
+  "WIZARD_TOTAL_METRICS": {
+    "defaultAggregate": "AVG",
+    "defaultResolutionMS": 1000,
+    "description": "Total Metrics",
+    "displayName": "Total Metrics",
+    "displayNameShort": "Total Metrics",
+    "isDisabled": 0,
+    "unit": "number"
+  },
+   "WIZARD_TOTAL_MEASUREMENTS": {
+    "defaultAggregate": "AVG",
+    "defaultResolutionMS": 1000,
+    "description": "Total Measurements",
+    "displayName": "Total Measurements",
+    "displayNameShort": "Total Measurements",
+    "isDisabled": 0,
+    "unit": "number"
+  }
+
+}
+
+
+			   
+			   
+			   
+			   

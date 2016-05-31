@@ -1,0 +1,21 @@
+{
+	"name": "pulse-workload-wizard",
+	"version": "1.0.0",
+	"description": "TrueSight Pulse plugin to generate metric data for demo purposes",
+	"main": "index.js",
+	"dependencies": {
+		"request": "*"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jcaldeir/pulse-workload-wizard"
+	},
+	"keywords": [
+		"plugin",
+		"workload",
+		"wizard"
+	],
+	"author": "João Caldeira <joao_caldeira@bmc.com>",
+	"license": "Apache v2",
+	"engine": "node >= 0.8.1"
+}

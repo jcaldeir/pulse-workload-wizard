@@ -1,0 +1,45 @@
+{
+  "name" : "Workload Wizard Plugin",
+  "version" : "1.0.0",
+  "meterVersionRequired" : "4.2.0-611",
+  "unsupportedPlatforms" : [ ],
+  "tags" : "workload,wizard,metrics",
+  "description" : "Dynamically generates metrics and data streams",
+  "icon": "bmc.png",
+  "dashboards" : [
+                 {
+                 "name" : "Workload Wizard",
+                 "layout" : "d-w=3&d-h=3&d-pad=5&d-light=0&d-bg=000000&d-g-STREAMING_ENGINE_CONNECTION_COUNT=0-0-1-1&d-g-STREAMING_SUBSCRIPTION_NEW_CUSTOMERS=1-0-1-1&d-g-STREAMING_SUBSCRIPTION_CANCELING_CUSTOMERS=2-0-1-1&d-g-STREAMING_FINANCIAL_REVENUE_TOTAL=0-1-1-1&d-g-STREAMING_FINANCIAL_REVENUE_PER_CONSUMER=1-1-1-1&d-g-STREAMING_FINANCIAL_REVENUE_PER_SECOND=2-1-1-1&d-g-STREAMING_ENGINE_MEMORY_USED=1-2-1-1&d-g-STREAMING_ENGINE_CPU_USER=0-2-1-1&d-sg-no=2-2-1-1"
+                 }
+  ],
+  "command" : "node index.js $(pollInterval)",
+  "postExtract" : "npm install",
+  "ignore" : "node_modules",
+  "metrics" : ["WIZARD_TOTAL_METRICS",
+			   "WIZARD_TOTAL_MEASUREMENTS"],
+  "paramSchema": [
+    {
+      "title": "Poll Interval (ms)",
+      "name": "pollInterval",
+      "description": "How often (in milliseconds) to poll the system for metrics.",
+      "type" : "integer",
+      "default" : 5000,
+      "required" : true
+    },
+    {
+      "title": "Wizard Meter",
+      "name": "source",
+      "description": "It will default to the hostname of the server/meter.",
+      "type": "string",
+      "required" : true
+    },
+	 {
+      "title": "Metrics Repository (URL)",
+      "name": "metricsHost",
+      "description": "URL of the repository containing the metrics.",
+      "type" : "string",
+      "default" : "https://github.com/jcaldeir/pulse-workload-metrics",
+      "required" : true
+    }
+  ]
+}
