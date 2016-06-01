@@ -47,11 +47,13 @@ exports.loadMetrics = function( streamData ) {
 		numberOfRepositories++;
 		pulse.call( _internal.metricsRepository[index] + _internal.metricsFile, processCall);		
 	}
-
-	for (index in _conf.verticals) //Load from internal repository + metrics from vertical industries
+      
+	var verticals = _conf.verticals.split(",");
+	 
+	for (index in verticals) //Load from internal repository + metrics from vertical industries
 	{
 		numberOfRepositories++;
-		pulse.call( _internal.metricsRepository[0] + _conf.verticals[index] + "/" + _internal.metricsFile, processCall);		
+		pulse.call( _internal.metricsRepository[0] + verticals[index] + "/" + _internal.metricsFile, processCall);		
 	}	
 	
 	numberOfRepositories++; //Load from personal repository
