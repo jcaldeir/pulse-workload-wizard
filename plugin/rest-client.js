@@ -10,14 +10,12 @@ var authorizationToken = _conf.authorizationToken;
 
 exports.call = function( apiContext, callback) {
 				
-	console.log("Calling External API");
+	//console.log("Calling External API");
 		   
 		    var callOptions = {
 					url: apiContext 
 				};
-			
-			 console.log(callOptions);
-			
+						
 			_pulse.get(callOptions, callback);
 					
 }
@@ -25,7 +23,7 @@ exports.call = function( apiContext, callback) {
 
 exports.pulseAPICall = function( apiContext, postData, callback) {
 				
-	console.log("Calling Pulse API");
+	//console.log("Calling Pulse API");
 						   
 		    var callOptions = {
 						  url: pulseAPI + apiContext,
@@ -35,8 +33,6 @@ exports.pulseAPICall = function( apiContext, postData, callback) {
 							'Content-type' : 'application/json; charset=UTF-8' 
 						 }
 				};
-
-			console.log(callOptions);
 				
 			if (! postData) { _pulse.get(callOptions, callback);	return	}
 			
