@@ -44,10 +44,25 @@
 	 {
       "title": "Personal Repository (URL)",
       "name": "personalRepository",
-      "description": "URL of your personal repository containing metrics. ",
+      "description": "URL of your personal repository containing metrics.",
       "type" : "string",
       "default" : "https://raw.githubusercontent.com/jcaldeir/pulse-workload-metrics/master/",
       "required" : false
+    },
+	{
+      "title": "Pulse API (URL)",
+      "name": "pulseAPI",
+      "description": "Pulse API URL to where you want to create metrics and send measurements.",
+      "type" : "string",
+      "default" : "https://api.truesight-staging.bmc.com",
+      "required" : true
+    },
+	{
+      "title": "Authorization Token",
+      "name": "authorizationToken",
+      "description": "Token to access Pulse API.",
+      "type" : "string",
+      "required" : true
     }
   ]
 }
