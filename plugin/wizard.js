@@ -48,17 +48,20 @@ exports.loadMetrics = function( streamData ) {
 		pulse.call( _internal.metricsRepository[index] + _internal.metricsFile, processCall);		
 	}
       
-	var verticals = _conf.verticals.split(",");
-	 
-	for (index in verticals) //Load from internal repository + metrics from vertical industries
-	{
-		numberOfRepositories++;
-		pulse.call( _internal.metricsRepository[0] + verticals[index] + "/" + _internal.metricsFile, processCall);		
-	}	
 	
-	numberOfRepositories++; //Load from personal repository
-	pulse.call( _conf.personalRepository + "/" + _internal.metricsFile, processCall);		
+	if ( _conf.verticals )  {
+		var verticals = _conf.verticals.split(",");
+		for (index in verticals) //Load from internal repository + metrics from vertical industries
+		{
+			numberOfRepositories++;
+			pulse.call( _internal.metricsRepository[0] + verticals[index] + "/" + _internal.metricsFile, processCall);		
+		}	
+	}
 	
+	if ( _conf.personalRepository ) {
+		numberOfRepositories++; //Load from personal repository
+		pulse.call( _conf.personalRepository + "/" + _internal.metricsFile, processCall);		
+	}
 }
 
 function createMetrics(metrics, streamData) {
