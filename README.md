@@ -30,19 +30,28 @@ None
 
 ### Plugin Configuration Fields
 
-|Field Name   |Description                                             |
-|:----------------|:---------------------------------------------------|
-|Source           |Meter collecting metrics from the Streaming Platform|
-|PollInterval     |How often to send measurements in seconds           |
-|MetricsHost      |URL containing the metrics metadata                 |
-
-
-### Metrics Collected
+|Field Name        |Description                                                            |
+|:--------------------|:-------------------------------------------------------------------|
+|Source               |Meter where the metrics are being generated                         |
+|PollInterval         |How often to send measurements in seconds                           |
+|PersonalRepository   |URL containing personal metrics metadata                            |
+|Verticals            |Industry related metrics to load (eg: banking, telco)               |
+|PulseAPI             |Pulse API URL on where to create the metrics and send measurements  |
+|AuthorizationToken   |Email and Token to access Pulse API                                 |
+	
+### Plugin Built-In Metrics Collected
 
 |Metric Name                       |Description                                          |
 |:---------------------------------|:----------------------------------------------------|
 |WIZARD_TOTAL_METRICS              |Total number of metrics generated                    |
 |WIZARD_TOTAL_MEASUREMENTS         |Total number of measurements pushed                  |
+
+
+### Dashboards
+
+|Dashboard Name      |Metrics Displayed                                                   |
+|:-------------------|:-------------------------------------------------------------------|
+|Workload Wizard     | Built-in metrics (WIZARD_TOTAL_METRICS, WIZARD_TOTAL_MEASUREMENTS) |
 
 ### References
 

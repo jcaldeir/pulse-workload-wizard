@@ -1,0 +1,5 @@
+{
+	"metricsRepository" : [ "https://raw.githubusercontent.com/jcaldeir/pulse-workload-metrics/master/" ],
+	"metricsFile" : "metrics.json",
+	"pulseCreateMetrics" : "/v1/batch/metrics"
+}

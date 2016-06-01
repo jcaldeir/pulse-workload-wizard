@@ -33,13 +33,21 @@
       "type": "string",
       "required" : true
     },
+	{
+      "title": "Vertical Industries",
+      "name": "verticals",
+      "description": "Industries that you want to load metrics from the internal repository.(Use Comma-separated values eg: banking,telco,etc)",
+      "type": "string",
+	  "default" : "banking,telco",
+      "required" : false
+    },
 	 {
-      "title": "Metrics Repository (URL)",
-      "name": "metricsHost",
-      "description": "URL of the repository containing the metrics.",
+      "title": "Personal Repository (URL)",
+      "name": "personalRepository",
+      "description": "URL of your personal repository containing metrics. ",
       "type" : "string",
-      "default" : "https://github.com/jcaldeir/pulse-workload-metrics",
-      "required" : true
+      "default" : "https://raw.githubusercontent.com/jcaldeir/pulse-workload-metrics/master/",
+      "required" : false
     }
   ]
 }
