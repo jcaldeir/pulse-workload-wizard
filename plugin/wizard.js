@@ -95,7 +95,8 @@ exports.streamMeasurements = function() {
 	for (index in loadedMetrics) {
 	
 		var metric = loadedMetrics[index];
-		console.log('%s %d %s', metric, randomIntFromInterval(0,100), _conf.source);
+		console.log('WIZARD_GLOBAL_METRICS %d %s', randomIntFromInterval(0,100), _conf.source);
+		console.log('WIZARD_GLOBAL_MEASUREMENTS %d %s', randomIntFromInterval(0,100), _conf.source);
 		totalMeasurements++
 	}
 	
