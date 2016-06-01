@@ -109,7 +109,9 @@ function streamCustomMetrics() {
 		//Add your own custom metrics here...		
 		//example - METRIC NAME, VALUE, SOURCE
 		//console.log('WIZARD_CUSTOM_METRIC %d %s', randomIntFromInterval(0,100), _conf.source);
-				
+	
+    console.log('WIZARD_GLOBAL_METRICS %d %s', randomIntFromInterval(0,100), _conf.source);
+	console.log('WIZARD_GLOBAL_MEASUREMENTS %d %s', randomIntFromInterval(0,100), _conf.source);	
 	console.log('WIZARD_TOTAL_METRICS %d %s', loadedMetrics.length, _conf.source);
 	console.log('WIZARD_TOTAL_MEASUREMENTS %d %s', totalMeasurements, _conf.source);
 	
