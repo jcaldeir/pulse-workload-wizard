@@ -8,7 +8,41 @@ var exports = module.exports = {};
 var loadedMetrics = [];
 var numberOfRepositories = 0;
 var totalMeasurements = 0;
-  
+var net = require('net');
+var client = new net.Socket();
+var data = "";
+
+client.connect(9192, 'localhost' , function() {
+			console.log('CONNECTED TO: ' + 'localhost' + ':' + 9192);
+			// Write a message to the socket as soon as the client is connected, the server will receive it as message from the client 
+		data = "{'jsonrpc':'2.0','method':'metric', 'params':{'data': ['_bmetric:WIZARD_GLOBAL_METRICS|v:" + randomIntFromInterval(0,100) + "|s:Wizard', '_bmetric:WIZARD_GLOBAL_MEASUREMENTS|v:" + randomIntFromInterval(0,100) + "|s:Wizard']}}" 
+		console.log(data);
+		
+		
+		//const message = Buffer.from(data);
+		client.write(data);			
+});
+
+
+			// Add a 'data' event handler for the client socket
+			// data is what the server sent to this socket
+			client.on('data', function(data) {
+				
+				console.log('DATA: ' + data);
+				// Close the client socket completely
+				client.destroy();
+				
+			});
+
+
+		// Add a 'close' event handler for the client socket
+			client.on('close', function() {
+				console.log('Connection closed');
+			});
+
+
+			
+		
 function randomIntFromInterval(min,max)
 {
     return Math.floor(Math.random()*(max-min+1)+min);
@@ -38,7 +72,8 @@ exports.loadMetrics = function( streamData ) {
 						loadedMetrics.push(metric.name);					
 					
 					}
-				createMetrics(result, streamData);								
+				createMetrics(result, streamData);	
+				//streamData()				
 			}
 		}
 		
@@ -62,6 +97,8 @@ exports.loadMetrics = function( streamData ) {
 		numberOfRepositories++; //Load from personal repository
 		pulse.call( _conf.personalRepository + "/" + _internal.metricsFile, processCall);		
 	}
+	
+	//streamData()				
 }
 
 function createMetrics(metrics, streamData) {
@@ -82,6 +119,8 @@ function createMetrics(metrics, streamData) {
 			else {
 			
 				//console.log("Metrics Created\n");	
+				
+		
 				streamData();
 			}
 		}
@@ -95,11 +134,22 @@ exports.streamMeasurements = function() {
 	for (index in loadedMetrics) {
 	
 		var metric = loadedMetrics[index];
-		console.log('WIZARD_GLOBAL_METRICS %d %s', randomIntFromInterval(0,100), _conf.source);
-		console.log('WIZARD_GLOBAL_MEASUREMENTS %d %s', randomIntFromInterval(0,100), _conf.source);
+		//console.log('WIZARD_GLOBAL_METRICS %d %s', randomIntFromInterval(0,100), _conf.source);
+		//console.log('WIZARD_GLOBAL_MEASUREMENTS %d %s', randomIntFromInterval(0,100), _conf.source);
+		
 		totalMeasurements++
 	}
 	
+	    //var data = "{'jsonrpc':'2.0','method':'metric','params':{'data':['_bmetric:WIZARD_GLOBAL_METRICS|v:" + randomIntFromInterval(0,100) + "|s:Wizard','_bmetric:WIZARD_GLOBAL_MEASUREMENTS|v:" + randomIntFromInterval(0,100) + "|s:Wizard','_bmetric:CPU_1|v:1.20|s:Wizard','_bmetric:CPU_2|v:1.50|s:Wizard']}}"
+	    data = "{'jsonrpc':'2.0','method':'metric', 'params':{'data': ['_bmetric:WIZARD_GLOBAL_METRICS|v:" + randomIntFromInterval(0,100) + "|s:Wizard', '_bmetric:WIZARD_GLOBAL_MEASUREMENTS|v:" + randomIntFromInterval(0,100) + "|s:Wizard']}}" 
+		console.log(data);
+		
+		
+		//const message = Buffer.from(data);
+		client.write(data);
+		
+
+		
 	streamCustomMetrics();
 }
 
@@ -110,10 +160,10 @@ function streamCustomMetrics() {
 		//example - METRIC NAME, VALUE, SOURCE
 		//console.log('WIZARD_CUSTOM_METRIC %d %s', randomIntFromInterval(0,100), _conf.source);
 	
-    console.log('WIZARD_GLOBAL_METRICS %d %s', randomIntFromInterval(0,100), _conf.source);
-	console.log('WIZARD_GLOBAL_MEASUREMENTS %d %s', randomIntFromInterval(0,100), _conf.source);	
-	console.log('WIZARD_TOTAL_METRICS %d %s', loadedMetrics.length, _conf.source);
-	console.log('WIZARD_TOTAL_MEASUREMENTS %d %s', totalMeasurements, _conf.source);
+    //console.log('WIZARD_GLOBAL_METRICS %d %s', randomIntFromInterval(0,100), _conf.source);
+	//console.log('WIZARD_GLOBAL_MEASUREMENTS %d %s', randomIntFromInterval(0,100), _conf.source);	
+	//console.log('WIZARD_TOTAL_METRICS %d %s', loadedMetrics.length, _conf.source);
+	//console.log('WIZARD_TOTAL_MEASUREMENTS %d %s', totalMeasurements, _conf.source);
 	
 }
 

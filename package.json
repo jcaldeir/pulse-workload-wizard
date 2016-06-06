@@ -4,7 +4,8 @@
 	"description": "TrueSight Pulse plugin to generate metric data for demo purposes",
 	"main": "index.js",
 	"dependencies": {
-		"request": "*"
+		"request": "*",
+		"net": "*"
 	},
 	"repository": {
 		"type": "git",

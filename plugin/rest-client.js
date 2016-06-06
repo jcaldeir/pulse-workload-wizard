@@ -1,16 +1,17 @@
 //rest-client.js
 
 var _pulse = require('request');
+var _internal = require('./conf/conf.json');
 var _conf = require('../param.json');
 			
 var exports = module.exports = {};
 
 var pulseAPI = _conf.pulseAPI;
-var authorizationToken = _conf.authorizationToken;	
+
 
 exports.call = function( apiContext, callback) {
 				
-	//console.log("Calling External API");
+	console.log("Calling External API");
 		   
 		    var callOptions = {
 					url: apiContext 
@@ -23,13 +24,18 @@ exports.call = function( apiContext, callback) {
 
 exports.pulseAPICall = function( apiContext, postData, callback) {
 				
-	//console.log("Calling Pulse API");
+	console.log("Calling Pulse API");
 						   
 		    var callOptions = {
 						  url: pulseAPI + apiContext,
 						  body:  postData,
+						  auth: {
+								user: _internal.user,
+								pass: _internal.pass,
+								sendImmediately: true
+							},
 						  headers: {
-							'Authorization': authorizationToken,
+							//'Authorization': authorizationToken,
 							'Content-type' : 'application/json; charset=UTF-8' 
 						 }
 				};
