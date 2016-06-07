@@ -36,8 +36,9 @@ None
 |PollInterval         |How often to send measurements in seconds                           |
 |PersonalRepository   |URL containing personal metrics metadata                            |
 |Verticals            |Industry related metrics to load (eg: banking, telco)               |
-|PulseAPI             |Pulse API URL on where to create the metrics and send measurements  |
-|AuthorizationToken   |Email and Token to access Pulse API                                 |
+|PulseAPI             |Pulse API URL where you want to create metrics and measurements     |
+|User                 |User to connect to TrueSight Pulse API                              |
+|Pass                 |User Token to connect to TrueSight Pulse API                        |
 	
 ### Plugin Built-In Metrics Collected
 
