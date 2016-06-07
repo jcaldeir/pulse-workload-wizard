@@ -72,7 +72,7 @@ exports.loadMetrics = function( streamData ) {
 					
 					}				
 				executed = true;
-				createMetrics(result, streamData);			
+				createMetrics(result, null);			
 			}
 		}
 		
@@ -97,6 +97,8 @@ exports.loadMetrics = function( streamData ) {
 						loadedMetrics.push(metric.name);					
 					
 					}
+				
+				createMetrics(result, null);	
 				
 				if ( executed ) return;	
 				
@@ -130,7 +132,8 @@ exports.loadMetrics = function( streamData ) {
 						loadedMetrics.push(metric.name);					
 					
 					}
-		
+				createMetrics(result, streamData);	
+				
 				if ( _conf.verticals )  {
 						var verticals = _conf.verticals.split(",");
 						for (index in verticals) //Load from internal repository + metrics from vertical industries
