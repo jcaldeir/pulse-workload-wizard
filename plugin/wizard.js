@@ -13,8 +13,8 @@ var net = require('net');
 var client = new net.Socket();
 var data = "";
 var MIN = 0;
-var MAX = 1000000;
-var executed = false;
+var MAX = 100000;
+var executed, streaming = false;
 
 
 //Init Process
@@ -72,7 +72,7 @@ exports.loadMetrics = function( streamData ) {
 					
 					}				
 				executed = true;
-				createMetrics(result, null);			
+				createMetrics(result, streamData);			
 			}
 		}
 		
@@ -98,7 +98,7 @@ exports.loadMetrics = function( streamData ) {
 					
 					}
 				
-				createMetrics(result, null);	
+				createMetrics(result, streamData);	
 				
 				if ( executed ) return;	
 				
@@ -175,6 +175,8 @@ function createMetrics(metrics, streamData) {
 			else {
 			
 				//console.log("Metrics Created\n");			
+				if ( streaming ) return;
+				streaming = true;
 				streamData();
 			}
 		}
