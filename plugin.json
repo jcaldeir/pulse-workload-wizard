@@ -27,9 +27,9 @@
       "required" : true
     },
     {
-      "title": "Wizard Meter",
+      "title": "Wizard Name",
       "name": "source",
-      "description": "It will default to the hostname of the server/meter.",
+      "description": "Name your Workload Wizard meter",
       "type": "string",
       "required" : true
     },
@@ -38,7 +38,6 @@
       "name": "verticals",
       "description": "Industries that you want to load metrics from the internal repository.(Use Comma-separated values eg: banking,telco,etc)",
       "type": "string",
-	  "default" : "banking,telco",
       "required" : false
     },
 	 {
@@ -46,7 +45,6 @@
       "name": "personalRepository",
       "description": "URL of your personal repository containing metrics.",
       "type" : "string",
-      "default" : "https://raw.githubusercontent.com/jcaldeir/pulse-workload-metrics/master/",
       "required" : false
     },
 	{
@@ -58,9 +56,16 @@
       "required" : true
     },
 	{
-      "title": "Authorization Token",
-      "name": "authorizationToken",
-      "description": "Token to access Pulse API.",
+      "title": "Username",
+      "name": "user",
+      "description": "User to connect to TrueSight Pulse API.",
+      "type" : "string",
+      "required" : true
+    },
+	{
+      "title": "Token Key",
+      "name": "pass",
+      "description": "User Token to connect to TrueSight Pulse API.",
       "type" : "string",
       "required" : true
     }

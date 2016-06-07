@@ -11,7 +11,7 @@ var pulseAPI = _conf.pulseAPI;
 
 exports.call = function( apiContext, callback) {
 				
-	console.log("Calling External API");
+	//console.log("Calling External API");
 		   
 		    var callOptions = {
 					url: apiContext 
@@ -24,18 +24,17 @@ exports.call = function( apiContext, callback) {
 
 exports.pulseAPICall = function( apiContext, postData, callback) {
 				
-	console.log("Calling Pulse API");
+	//console.log("Calling Pulse API");
 						   
 		    var callOptions = {
 						  url: pulseAPI + apiContext,
 						  body:  postData,
 						  auth: {
-								user: _internal.user,
-								pass: _internal.pass,
+								user: _conf.user,
+								pass: _conf.pass,
 								sendImmediately: true
 							},
 						  headers: {
-							//'Authorization': authorizationToken,
 							'Content-type' : 'application/json; charset=UTF-8' 
 						 }
 				};

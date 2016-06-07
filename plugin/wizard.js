@@ -3,6 +3,7 @@
 var pulse = require('./rest-client.js');
 var _conf = require('../param.json');
 var _internal = require('./conf/conf.json');
+var _ = require('underscore');
 			
 var exports = module.exports = {};
 var loadedMetrics = [];
@@ -11,48 +12,72 @@ var totalMeasurements = 0;
 var net = require('net');
 var client = new net.Socket();
 var data = "";
-
-client.connect(9192, 'localhost' , function() {
-			console.log('CONNECTED TO: ' + 'localhost' + ':' + 9192);
-			// Write a message to the socket as soon as the client is connected, the server will receive it as message from the client 
-		data = "{'jsonrpc':'2.0','method':'metric', 'params':{'data': ['_bmetric:WIZARD_GLOBAL_METRICS|v:" + randomIntFromInterval(0,100) + "|s:Wizard', '_bmetric:WIZARD_GLOBAL_MEASUREMENTS|v:" + randomIntFromInterval(0,100) + "|s:Wizard']}}" 
-		console.log(data);
-		
-		
-		//const message = Buffer.from(data);
-		client.write(data);			
-});
+var MIN = 0;
+var MAX = 1000000;
+var executed = false;
 
 
-			// Add a 'data' event handler for the client socket
-			// data is what the server sent to this socket
-			client.on('data', function(data) {
-				
-				console.log('DATA: ' + data);
-				// Close the client socket completely
-				client.destroy();
-				
-			});
-
+//Init Process
+function init()
+{   
+		// Add a 'data' event handler for the client socket
+		// data is what the server sent to this socket
+		client.on('data', function(data) {
+			console.log('DATA: ' + data);
+			// Close the client socket completely
+			client.destroy();
+		});
 
 		// Add a 'close' event handler for the client socket
-			client.on('close', function() {
+		client.on('close', function() {
 				console.log('Connection closed');
-			});
+		});
 
+}
 
-			
+//run init() function
+init();
+		
+
+//Process all the workload
 		
 function randomIntFromInterval(min,max)
 {
     return Math.floor(Math.random()*(max-min+1)+min);
 }
 
+
 exports.loadMetrics = function( streamData ) {
 	
 	//console.log("Loading Metrics");	
-		    
-		function processCall(error, response, body) {
+		 
+		function processPersonalRepositoryCall(error, response, body) {
+		
+			if (error) { console.log("Loading Metrics Error\n" , error ); return; }
+			
+			if (response.statusCode != 200) {			  
+			  
+			  console.log("Loading Metrics Error\n %s \n %s " , response.statusCode, body );
+			  
+			}
+			else {
+			
+				var result = JSON.parse(body);	
+				//console.log("Personal Metrics Loaded \n", result);
+
+				for (index in result) {
+					
+						var metric = result[index];
+						loadedMetrics.push(metric.name);					
+					
+					}				
+				executed = true;
+				createMetrics(result, streamData);			
+			}
+		}
+		
+
+		function processVerticalsCall(error, response, body) {
 					
 			if (error) { console.log("Loading Metrics Error\n" , error ); return; }
 			
@@ -64,7 +89,7 @@ exports.loadMetrics = function( streamData ) {
 			else {
 			
 				var result = JSON.parse(body);	
-				//console.log("Metrics Loaded \n", result);
+				//console.log("Vertical Metrics Loaded \n", result);
 
 				for (index in result) {
 					
@@ -72,33 +97,61 @@ exports.loadMetrics = function( streamData ) {
 						loadedMetrics.push(metric.name);					
 					
 					}
-				createMetrics(result, streamData);	
-				//streamData()				
+				
+				if ( executed ) return;	
+				
+				if ( _conf.personalRepository ) {
+					numberOfRepositories++; //Load from personal repository
+					executed = true;
+					pulse.call( _conf.personalRepository + "/" + _internal.metricsFile, processPersonalRepositoryCall);		
+				}
+				
 			}
 		}
+	
+	
+		function processInternalRepositoryCall(error, response, body) {
+					
+			if (error) { console.log("Loading Metrics Error\n" , error ); return; }
+			
+			if (response.statusCode != 200) {			  
+			  
+			  console.log("Loading Metrics Error\n %s \n %s " , response.statusCode, body );
+			  
+			}
+			else {
+			
+				var result = JSON.parse(body);	
+				//console.log("Internal Metrics Loaded \n", result);
+
+				for (index in result) {
+					
+						var metric = result[index];
+						loadedMetrics.push(metric.name);					
+					
+					}
 		
-	for (index in _internal.metricsRepository) //Load from internal repository
-	{
-		numberOfRepositories++;
-		pulse.call( _internal.metricsRepository[index] + _internal.metricsFile, processCall);		
-	}
-      
+				if ( _conf.verticals )  {
+						var verticals = _conf.verticals.split(",");
+						for (index in verticals) //Load from internal repository + metrics from vertical industries
+						{
+							numberOfRepositories++;
+							pulse.call( _internal.metricsRepository[0] + verticals[index] + "/" + _internal.metricsFile, processVerticalsCall);		
+						}	
+				}
+				
+			}
+		}
 	
-	if ( _conf.verticals )  {
-		var verticals = _conf.verticals.split(",");
-		for (index in verticals) //Load from internal repository + metrics from vertical industries
-		{
-			numberOfRepositories++;
-			pulse.call( _internal.metricsRepository[0] + verticals[index] + "/" + _internal.metricsFile, processCall);		
-		}	
-	}
-	
-	if ( _conf.personalRepository ) {
-		numberOfRepositories++; //Load from personal repository
-		pulse.call( _conf.personalRepository + "/" + _internal.metricsFile, processCall);		
-	}
-	
-	//streamData()				
+	client.connect(9192, 'localhost' , function() {
+		//console.log('CONNECTED TO: ' + 'localhost' + ':' + 9192);	
+		for (index in _internal.metricsRepository) //Load from internal repository
+			{
+				numberOfRepositories++;
+				pulse.call( _internal.metricsRepository[index] + _internal.metricsFile, processInternalRepositoryCall);		
+			}			
+	});
+		
 }
 
 function createMetrics(metrics, streamData) {
@@ -118,9 +171,7 @@ function createMetrics(metrics, streamData) {
 			}
 			else {
 			
-				//console.log("Metrics Created\n");	
-				
-		
+				//console.log("Metrics Created\n");			
 				streamData();
 			}
 		}
@@ -130,25 +181,27 @@ function createMetrics(metrics, streamData) {
 
 exports.streamMeasurements = function() {
 
-	//console.log("Streaming Default Measurements");		
-	for (index in loadedMetrics) {
+	//console.log("Streaming Default Measurements");	
+	var data_prefix = "{'jsonrpc':'2.0','method':'metric', 'params':{'data': ["
+	var data_sufix = "]}}";
+	var metrics = _.unique(loadedMetrics);	
 	
-		var metric = loadedMetrics[index];
-		//console.log('WIZARD_GLOBAL_METRICS %d %s', randomIntFromInterval(0,100), _conf.source);
-		//console.log('WIZARD_GLOBAL_MEASUREMENTS %d %s', randomIntFromInterval(0,100), _conf.source);
-		
+	data = data_prefix;
+	
+	for (index in metrics) {
+	
+		var metric = metrics[index];
+				
+		if (index > 0 ) data+=",";
+		data+= "'_bmetric:" + metric + "|v:" + randomIntFromInterval(MIN, MAX) + "|s:" + _conf.source + "'";		
 		totalMeasurements++
 	}
-	
-	    //var data = "{'jsonrpc':'2.0','method':'metric','params':{'data':['_bmetric:WIZARD_GLOBAL_METRICS|v:" + randomIntFromInterval(0,100) + "|s:Wizard','_bmetric:WIZARD_GLOBAL_MEASUREMENTS|v:" + randomIntFromInterval(0,100) + "|s:Wizard','_bmetric:CPU_1|v:1.20|s:Wizard','_bmetric:CPU_2|v:1.50|s:Wizard']}}"
-	    data = "{'jsonrpc':'2.0','method':'metric', 'params':{'data': ['_bmetric:WIZARD_GLOBAL_METRICS|v:" + randomIntFromInterval(0,100) + "|s:Wizard', '_bmetric:WIZARD_GLOBAL_MEASUREMENTS|v:" + randomIntFromInterval(0,100) + "|s:Wizard']}}" 
-		console.log(data);
-		
-		
-		//const message = Buffer.from(data);
-		client.write(data);
-		
 
+		data+= ",'_bmetric:" + "WIZARD_TOTAL_METRICS" + "|v:" + loadedMetrics.length + "|s:" + _conf.source + "',";
+		data+= "'_bmetric:" + "WIZARD_TOTAL_MEASUREMENTS" + "|v:" + totalMeasurements + "|s:" + _conf.source + "'";		
+		data+= data_sufix;
+		//console.log(data);	
+		client.write(data);		
 		
 	streamCustomMetrics();
 }
@@ -159,11 +212,6 @@ function streamCustomMetrics() {
 		//Add your own custom metrics here...		
 		//example - METRIC NAME, VALUE, SOURCE
 		//console.log('WIZARD_CUSTOM_METRIC %d %s', randomIntFromInterval(0,100), _conf.source);
-	
-    //console.log('WIZARD_GLOBAL_METRICS %d %s', randomIntFromInterval(0,100), _conf.source);
-	//console.log('WIZARD_GLOBAL_MEASUREMENTS %d %s', randomIntFromInterval(0,100), _conf.source);	
-	//console.log('WIZARD_TOTAL_METRICS %d %s', loadedMetrics.length, _conf.source);
-	//console.log('WIZARD_TOTAL_MEASUREMENTS %d %s', totalMeasurements, _conf.source);
 	
 }
 

@@ -1,7 +1,6 @@
 {
 	"metricsRepository" : [ "https://raw.githubusercontent.com/jcaldeir/pulse-workload-metrics/master/" ],
 	"metricsFile" : "metrics.json",
-	"pulseCreateMetrics" : "/v1/batch/metrics",
-	"user" : "joao_caldeira@bmc.com",
-	"pass" : "39621849-f71d-4ecb-9d5e-1ebfc26568ff"
+	"pulseCreateMetrics" : "/v1/batch/metrics"
 }
+

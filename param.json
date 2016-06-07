@@ -2,7 +2,8 @@
 	"pollInterval" : 5000,
 	"source" : "Workload Wizard",
 	"verticals" : "banking,telco",
-	"personalRepository" : "https://raw.githubusercontent.com/jcaldeir/pulse-workload-metrics/master/",
+	"personalRepository" : "https://raw.githubusercontent.com/jcaldeir/pulse-workload-metrics/master/personal",
 	"pulseAPI" : "https://api.truesight-staging.bmc.com",
-	"authorizationToken" : "Basic am9hb19jYWxkZWlyYUBibWMuY29tOjM5NjIxODQ5LWY3MWQtNGVjYi05ZDVlLTFlYmZjMjY1NjhmZg=="
+	"user" : "joao_caldeira@bmc.com",
+	"pass" : "39621849-f71d-4ecb-9d5e-1ebfc26568ff"
 }
